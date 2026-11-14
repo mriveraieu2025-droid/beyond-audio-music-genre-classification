@@ -242,12 +242,139 @@ The verification used the original candidate file. It did not independently rege
 We excluded the four flagged test recordings without retraining the models or changing their
 
 
+## Stage 5: Research Figures and Paper Consistency
+
+### Overview
+
+We reconstructed the numerical tables and research
+figures using a separate Google Colab notebook.
+
+The original saved predictions and verified
+Stage 3–4 analysis outputs were used.
+
+The original report figures were not overwritten.
+
+### Main Model Results
+
+All ten reported model configurations were
+independently evaluated from their saved predictions.
+
+The reconstructed accuracy, balanced accuracy,
+and macro-F1 scores matched Table 2 of the
+research paper to its reported precision.
+
+The highest-performing model remained
+MM Early Fusion LR:
+
+- Accuracy: 70.20%
+- Balanced accuracy: 67.30%
+- Macro-F1: 69.10%
+
+### Figure 1: Confusion Matrices
+
+Four row-normalized confusion matrices were
+reconstructed:
+
+- CNN Audio LR
+- CNN Early Fusion LR
+- MM Early Fusion LR
+- MM Fusion NN
+
+All 24 genre-specific F1 scores matched
+Table 7 to two decimal places.
+
+The figure was also reviewed for readability,
+consistent labels, and color scaling.
+
+### Figure 2: Fusion Gains by Visual Typicality
+
+The figure was reconstructed using the verified
+artist-cluster bootstrap estimates.
+
+All quintile-level fusion gains and their
+95% confidence intervals matched the original
+research outputs.
+
+The figure illustrates the strong positive
+fusion gains in Q1 and negative gains in Q5.
+
+### Figure 3: Accuracy by Visual Typicality
+
+The supplementary accuracy curves were regenerated
+from the original frozen model predictions.
+
+The selected Q1/Q5 reference values matched
+the original analysis.
+
+### Supplementary Tables
+
+Tables 3, 4, 8, 9, and 10 were verified
+against the corresponding predictions and
+saved analysis results.
+
+These cover:
+
+- Fusion strategies within Q5
+- Rescued and harmed predictions
+- Overall prediction transitions
+- Audio–visual prediction disagreement
+- Near-duplicate artwork sensitivity
+
+All automated consistency checks passed.
+
+### Figure 4: Qualitative Album-Cover Examples
+
+Six selected examples were checked against the
+original research metadata:
+
+- Three visually typical examples rescued by fusion
+- Three visually atypical examples harmed by fusion
+
+Track identifiers, true genres, quintile assignments,
+and model predictions were verified.
+
+The PDF was visually inspected. The six images,
+displayed labels, and two-row layout were readable
+and consistent with the intended examples.
+
+The correspondence between embedded artwork and
+original source URLs was not independently reverified.
+
+The examples are illustrative and should not be
+interpreted as a representative sample.
+
+### Saved Outputs
+
+The Stage 5 audit and regenerated figures were
+saved separately under:
+
+`finetuning_experiments/reproducible_stage5_2026/`
+
+New figure PDFs and PNGs are located in the
+`figures/` subfolder.
+
+No existing research outputs were overwritten.
+
+### Verification Status
+
+The five-stage reconstruction now covers the
+principal classification models, statistical
+analyses, robustness checks, and research figures.
+
+These results were reproduced using the existing
+project data and Colab environment.
+
+Independent execution from a fresh environment
+remains outstanding.
+
+
 ## Remaining Verification Work
 
-- Reproduce and verify the final research figures
-- Test execution from a clean environment
-- Check consistency between the final paper and code
-- Complete repository documentation
-- Document genuine team contributions and development history
+- Execute the workflow in a clean environment
+- Finalize data-access and execution instructions
+- Check the final LaTeX paper against the code
+- Confirm figure placement and the 12-page limit
+- Complete repository organization and team contribution records
+- Prepare for the project presentation and code defense
 
 
