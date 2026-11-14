@@ -207,18 +207,47 @@ Stage 3 successfully reproduced:
 
 The original analysis files were not overwritten.
 
+## Stage 4: Data Integrity and Robustness Verification
+
+### Overview
+
+We reconstructed the data-integrity checks and near-duplicate album-artwork sensitivity analysis using a separate Google Colab notebook.
+
+The original datasets, model checkpoints, predictions, and audit files were preserved without modification.
+
+### Dataset Integrity
+
+The verification covered 11,870 recordings from 6,461 unique artists.
+
+The original training, validation, and test partitions were confirmed to be artist-disjoint.
+
+All experimental recordings were matched to the dataset metadata, with no missing image URLs.
+
+No exact album-index or image-URL overlaps were found between the experimental partitions.
+
+### Near-Duplicate Artwork Audit
+
+The original perceptual-hash candidate file contained 12 pairs.
+
+Using the current experimental split assignments, we identified:
+
+- 5 candidate train–test artwork pairs.
+- 4 unique test recordings involved in those pairs.
+- No inconsistencies between the stored and reconstructed candidate hash distances.
+
+The verification used the original candidate file. It did not independently regenerate perceptual hashes or establish that all possible near-duplicates had been identified.
+
+### Sensitivity Analysis
+
+We excluded the four flagged test recordings without retraining the models or changing their
+
 
 ## Remaining Verification Work
 
-The principal classification experiments and
-visual-typicality statistical analysis have
-now been reconstructed.
+- Reproduce and verify the final research figures
+- Test execution from a clean environment
+- Check consistency between the final paper and code
+- Complete repository documentation
+- Document genuine team contributions and development history
 
-Remaining tasks include:
-
-- Robustness checks for candidate near-duplicate artwork
-- Reproduction and verification of final research figures
-- Clean-environment execution and documentation
-- Final paper-to-code consistency checks
-- Repository organization and team contribution history
 
