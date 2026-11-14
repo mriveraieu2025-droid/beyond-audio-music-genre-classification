@@ -1,116 +1,108 @@
 
-# Reproducibility Verification
+## Stage 2: Neural-Network Reproducibility
 
-## Overview
+### Overview
 
-We reconstructed the logistic-regression and fusion
-experiments in a separate Google Colab notebook.
+We independently reconstructed the CNN and MM
+fusion neural-network experiments using a separate
+Google Colab notebook.
 
-The original development notebook was preserved
-without modification.
+The original development notebook and saved model
+checkpoints were preserved.
 
-## Environment
+### Neural-Network Architectures
 
-The verification run used:
+| Setting | CNN Fusion NN | MM Fusion NN |
+|---|---|---|
+| Input features | 4,096 | 400 |
+| Hidden layers | 256, 64 | 128, 32 |
+| Trainable parameters | 1,065,670 | 55,654 |
+| Best epoch | 5 | 28 |
 
-- Python 3.13.18
-- NumPy 2.4.6
-- pandas 2.2.3
-- scikit-learn 1.6.1
+Both models used AdamW optimization and
+validation-based early stopping.
 
-## Dataset Verification
+### Validation Verification
 
-The notebook successfully loaded and validated
-all four feature representations.
+The reproduced models selected exactly the same
+best epochs as the original experiments.
 
-The original artist-disjoint partitions were
-preserved:
+Validation macro-F1:
 
-| Split | Recordings |
-|---|---:|
-| Training | 8,242 |
-| Validation | 1,836 |
-| Test | 1,792 |
+- CNN Fusion NN: 0.673827
+- MM Fusion NN: 0.688492
 
-## Model Selection
+For both models, the original and reproduced
+checkpoints generated identical predictions
+for all 1,836 validation recordings.
 
-Logistic-regression regularization was selected
-using validation macro-F1.
+### Held-Out Test Verification
 
-The reconstructed experiments selected the same
-late-fusion parameters as the original analysis:
+The reconstructed models produced the following
+results on 1,792 test recordings:
 
-- Fixed audio weight: 0.55
-- Adaptive beta: 0.50
-- Adaptive gamma: 1
+| Model | Accuracy | Balanced Accuracy | Macro-F1 |
+|---|---:|---:|---:|
+| CNN Fusion NN | 68.58% | 67.90% | 67.97% |
+| MM Fusion NN | 69.03% | 68.31% | 68.49% |
 
-## Test Results
+All three reported metrics matched the original
+research results to two decimal places.
 
-Six of the eight reported model configurations
-reproduced all three metrics to two decimal
-places.
+### Prediction-Level Verification
 
-Two models exhibited small differences:
+We compared the original saved checkpoints
+with the newly trained models.
 
-| Model | Original accuracy | Reproduced accuracy |
-|---|---:|---:|
-| CNN Early Fusion LR | 69.64% | 69.59% |
-| All Four LR | 69.48% | 69.53% |
+Results:
 
-Each discrepancy was traced to exactly one
-different test prediction.
+- CNN Fusion NN: 0 different test predictions
+- MM Fusion NN: 0 different test predictions
 
-The original saved model checkpoints reproduced
-their corresponding original prediction CSV
-files with zero disagreements.
+Thus, every test recording received the same
+predicted genre from the original and reproduced
+models for both architectures.
 
-## Numerical Differences
+### Execution Environment
 
-The original and reconstructed models used the
-same regularization strength, solver, tolerance,
-maximum iterations, and feature-scaling means.
+The reconstructed experiments were executed
+using Google Colab and the original project
+data stored in Google Drive.
 
-Their fitted coefficients differed slightly.
+PyTorch version: 2.14.1+cpu.
 
-For CNN Early Fusion, both fitting runs took
-130 iterations.
+New model checkpoints and experiment outputs
+were saved separately under:
 
-For All Four LR, the original model took 163
-iterations, while the reconstructed model
-took 151 iterations.
+`finetuning_experiments/reproducible_stage2_2026/`
 
-The models differed on recordings for which
-the two leading class probabilities were
-extremely close.
+The original checkpoints were not overwritten.
 
-The exact cause of the numerical differences
-has not been conclusively established.
+### Interpretation
 
-No reported results were modified to conceal
-these discrepancies.
+Stage 2 successfully reproduced both neural
+networks at the individual-prediction level.
 
-## Main Finding
+This provides stronger verification than
+matching aggregate test metrics alone.
 
-The highest-performing logistic-regression
-configuration, MM Early Fusion, reproduced:
+The verification was conducted using the
+existing project data and Colab environment.
+A completely independent installation and
+execution from a fresh environment remains
+a separate reproducibility objective.
 
-- Test accuracy: 70.20%
-- Balanced accuracy: 67.30%
-- Macro-F1: 69.10%
+## Remaining Verification Work
 
-These findings support the reproducibility of
-the main logistic-regression results in the
-tested Colab environment.
+The logistic-regression and neural-network
+experiments have now been reconstructed.
 
-## Scope
+The remaining research analyses requiring
+separate verification include:
 
-This verification covers the Stage 1
-logistic-regression and fusion experiments.
+- Visual-typicality quintiles
+- Rescued and harmed predictions
+- Artist-cluster bootstrap confidence intervals
+- Robustness to candidate near-duplicate artwork
+- Reproduction of the final research figures
 
-Neural-network experiments, visual-typicality
-analysis, bootstrap uncertainty estimates,
-and robustness checks require separate
-verification.
-
-The original dataset and intermediate inputs
-remain external to the public GitHub repository.
