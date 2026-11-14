@@ -92,17 +92,133 @@ A completely independent installation and
 execution from a fresh environment remains
 a separate reproducibility objective.
 
+
+## Stage 3: Visual Typicality and Statistical Verification
+
+### Overview
+
+We reconstructed the visual-typicality analysis,
+prediction-level transitions, and artist-cluster
+bootstrap confidence intervals using a separate
+Google Colab notebook.
+
+The original predictions and analysis files
+were preserved.
+
+### Dataset and Typicality Verification
+
+The analysis included:
+
+- 1,792 test recordings
+- 975 unique test artists
+- Six musical genres
+- Five genre-relative visual-typicality quintiles
+
+Typicality was reconstructed from the CNN visual
+embeddings using cosine distance to the corresponding
+training-set genre centroid.
+
+All 1,792 recordings received exactly the same
+quintile assignment as in the original analysis.
+
+The maximum cosine-distance difference was
+approximately 5.93e-08.
+
+True genre labels were used to define the
+retrospective typicality groups. This analysis
+is not a deployable prediction-time procedure.
+
+### Rescued and Harmed Predictions
+
+The reconstructed prediction transitions matched
+the original analysis exactly.
+
+| Representation | Rescued | Harmed | Net Gain |
+|---|---:|---:|---:|
+| CNN | 209 | 142 | +3.74 pp |
+| MM | 190 | 124 | +3.68 pp |
+
+All rescued and harmed counts also matched
+within each of the five typicality quintiles.
+
+### Artist-Cluster Bootstrap
+
+We performed 3,000 bootstrap resamples of
+the 975 test artists.
+
+Overall fusion gains and 95% percentile
+confidence intervals:
+
+| Comparison | Gain | 95% CI |
+|---|---:|---|
+| CNN fusion vs audio | +3.74 pp | [1.62, 5.86] |
+| MM fusion vs audio | +3.68 pp | [1.67, 5.72] |
+
+The reconstructed bootstrap estimates and
+confidence intervals matched the original
+saved results to floating-point precision.
+
+### Visual-Typicality Contrasts
+
+The largest contrast was observed between
+the most visually typical group (Q1) and
+the least visually typical group (Q5).
+
+| Comparison | Q1-Q5 Contrast | 95% CI |
+|---|---:|---|
+| CNN fusion | +37.17 pp | [30.64, 43.70] |
+| MM fusion | +34.40 pp | [28.22, 40.94] |
+
+The difference between the MM and CNN
+contrasts was -2.78 percentage points,
+with a 95% confidence interval of
+[-8.09, 2.89].
+
+These estimates reproduced the original
+saved research results.
+
+### Interpretation and Limitations
+
+The results show a strong association between
+genre-relative visual typicality and the
+benefit of multimodal fusion.
+
+They do not establish a causal relationship.
+
+Because the analysis uses true test genres
+and explores subgroup performance on an
+already evaluated test set, the findings
+should be interpreted as retrospective
+and exploratory.
+
+Independent replication on new data remains
+an important direction for future research.
+
+### Verification Status
+
+Stage 3 successfully reproduced:
+
+- Visual-typicality quintile assignments
+- Overall rescued and harmed predictions
+- Quintile-level prediction transitions
+- Overall artist-cluster bootstrap intervals
+- Quintile-level bootstrap intervals
+- Paired Q1-Q5 statistical contrasts
+
+The original analysis files were not overwritten.
+
+
 ## Remaining Verification Work
 
-The logistic-regression and neural-network
-experiments have now been reconstructed.
+The principal classification experiments and
+visual-typicality statistical analysis have
+now been reconstructed.
 
-The remaining research analyses requiring
-separate verification include:
+Remaining tasks include:
 
-- Visual-typicality quintiles
-- Rescued and harmed predictions
-- Artist-cluster bootstrap confidence intervals
-- Robustness to candidate near-duplicate artwork
-- Reproduction of the final research figures
+- Robustness checks for candidate near-duplicate artwork
+- Reproduction and verification of final research figures
+- Clean-environment execution and documentation
+- Final paper-to-code consistency checks
+- Repository organization and team contribution history
 
