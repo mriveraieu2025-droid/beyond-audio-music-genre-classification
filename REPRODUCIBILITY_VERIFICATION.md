@@ -93,6 +93,73 @@ execution from a fresh environment remains
 a separate reproducibility objective.
 
 
+## Additional Stage 2 GPU Reproduction Verification
+
+### Recorded Execution Environment
+
+The neural-network experiments were executed
+in Google Colab using:
+
+- GPU: NVIDIA Tesla T4
+- Python: 3.13.16
+- PyTorch: 2.14.1+cu130
+- CUDA: Available
+- Random seed: 42
+
+### Reproduction Results
+
+Both neural networks reproduced the original
+validation-selected checkpoints at the
+individual-prediction level.
+
+| Verification | CNN Fusion NN | MM Fusion NN |
+|---|---:|---:|
+| Best epoch | 5 | 28 |
+| Validation prediction differences | 0 | 0 |
+| Test prediction differences | 0 | 0 |
+| Test accuracy | 68.58% | 69.03% |
+| Test macro-F1 | 67.97% | 68.49% |
+
+All 1,836 validation predictions and all
+1,792 test predictions matched the original
+saved models for each architecture.
+
+### CPU and GPU Comparison
+
+A separate fresh CPU execution produced
+different selected epochs, model predictions,
+and test metrics.
+
+This demonstrates sensitivity to execution
+conditions, although the precise cause
+has not been isolated.
+
+An earlier CPU execution also reproduced
+the original predictions, so GPU hardware
+alone cannot be established as the cause.
+
+The Tesla T4 environment above is a
+verified configuration for reproducing
+the original neural-network predictions.
+
+Exact reproducibility across arbitrary
+hardware and software environments is
+not guaranteed.
+
+### Preserved Artifacts
+
+The successful GPU verification outputs
+were backed up to:
+
+finetuning_experiments/verified_stage2_t4_2026/
+
+The backup includes the reproduced model
+artifacts and recorded execution environment.
+
+The original research checkpoints and
+reported paper results remain unchanged.
+
+
 ## Stage 3: Visual Typicality and Statistical Verification
 
 ### Overview
