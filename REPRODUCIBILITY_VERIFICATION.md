@@ -435,13 +435,61 @@ Independent execution from a fresh environment
 remains outstanding.
 
 
-## Remaining Verification Work
+## Final Fresh-Runtime Verification: Stages 3–5
 
-- Execute the workflow in a clean environment
-- Finalize data-access and execution instructions
-- Check the final LaTeX paper against the code
-- Confirm figure placement and the 12-page limit
-- Complete repository organization and team contribution records
-- Prepare for the project presentation and code defense
+Following the successful Tesla T4 reproduction of
+Stage 2, Stages 3–5 were executed again in
+Google Colab to verify the downstream analyses.
+
+### Stage 3: Visual Typicality and Bootstrap
+
+- All 1,792 visual-typicality quintile assignments matched.
+- CNN rescued/harmed counts: 209/142.
+- MM rescued/harmed counts: 190/124.
+- All quintile-level fusion gains matched the report.
+- Artist-cluster bootstrap estimates and confidence
+  intervals matched the original saved analysis
+  to floating-point precision.
+- The analysis uses original saved test predictions
+  and is retrospective, not an independent replication.
+
+### Stage 4: Artwork-Overlap Sensitivity
+
+- All 12 saved perceptual-hash candidate pairs verified.
+- Five train-test candidate pairs identified.
+- Four unique test recordings flagged.
+- CNN fusion gain after exclusions: +3.64 pp.
+- MM fusion gain after exclusions: +3.58 pp.
+- Perceptual hashes were not independently regenerated;
+  verification used the saved candidate list.
+
+### Stage 5: Final Tables and Figures
+
+- All 10 Table 2 model results matched the report
+  at its stated two-decimal precision.
+- Genre-specific F1 scores in Table 7 verified.
+- Figure 1 reconstructed from saved predictions.
+- Figure 2 bootstrap estimates and intervals verified.
+- Figure 3 accuracy values verified.
+- Tables 3, 4, 8, 9 and 10 verified.
+- Figure 4 track IDs, genres and predictions verified.
+- Figure 4 artwork and visual layout still require
+  human inspection; image URLs were not independently
+  retrieved.
+
+### Conclusion
+
+The five-stage workflow has been checked against
+the original experimental artifacts.
+
+Stage 2 reproduced all original validation and
+test predictions on a Tesla T4 GPU.
+
+The remaining limitations include small fresh-fit
+variation in Stage 1, environment sensitivity during
+neural-network retraining, reliance on saved
+near-duplicate candidates, and the retrospective
+nature of the visual-typicality analysis.
+
 
 
