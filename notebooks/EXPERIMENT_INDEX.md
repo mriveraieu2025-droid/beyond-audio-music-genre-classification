@@ -1,185 +1,55 @@
-
 # Experiment Index
 
-## Purpose
+This guide distinguishes the **original Colab development notebook** from the five final, organized verification notebooks and identifies which original research outputs support the paper.
 
-This document connects the development notebook
-to the experiments reported in our research paper.
+The [development notebook](beyond_audio_colab_development.ipynb) predates the GitHub repository. It includes exploratory experiments, corrections, intermediate results, and final model evaluations. Some earlier cells were superseded; their output should not automatically be treated as evidence for the final report.
 
-The notebook was developed in Google Colab before
-the GitHub repository was created. It contains
-exploratory experiments, subsequent corrections,
-and final evaluations.
+## 1. Original development work
 
-Not all notebook cells correspond to final results.
-Some early experiments were superseded by later
-analyses.
+| Research area | Corresponding development-notebook sections | Relevant saved research outputs |
+|---|---|---|
+| Dataset and embedding preparation | Inspection of MSD-I Metadata; Verification of Audio Feature Alignment; Feature Quality Validation; Extraction and Alignment of Audio and Visual Embeddings | Original MSD-I track indices and prepared CNN/MM feature matrices |
+| Audio/visual classification and CNN fusion | Audio-Only Baseline; Visual-Only Baseline; Early Fusion; Final Evaluation on the Held-Out Test Set | `final_test_metrics.csv`, `final_test_predictions.csv` |
+| CNN versus MM representations | Development sequence labelled **EXPERIMENT 2** | `representation_final_test_metrics.csv`, `representation_final_test_predictions.csv` |
+| Neural-network classification | Original development sequence labelled **STAGE 6** | `neural_network_test_metrics.csv`, `neural_network_test_predictions.csv`, saved checkpoints |
+| Typicality and prediction transitions | Visual-typicality subgroup analysis; paired rescued/harmed transitions | `final_test_typicality_details.csv`, `cnn_mm_paired_transitions.csv`, `cnn_mm_quintile_transitions.csv` |
+| Statistical uncertainty | Artist-cluster bootstrap; Q1–Q5 contrast analysis | `overall_fusion_gain_cluster_bootstrap.csv`, `quintile_fusion_gain_cluster_bootstrap.csv`, `q1_q5_fusion_gain_contrasts.csv` |
+| Artwork audit and robustness | Original partition verification; image-URL checks; perceptual-hash candidate analysis | Saved artwork metadata, `near_duplicate_candidates.csv`, sensitivity tables |
+| Research figures | Confusion matrices; fusion-gain plots; accuracy-by-typicality plots; selected album-cover examples | Original figures and supporting prediction or metadata CSVs |
 
-## 1. Dataset Preparation and Initial Experiments
+The file names above refer to **original research artifacts in the team's project workspace**, not necessarily files located next to this Markdown document in GitHub.
 
-Notebook sections:
+## 2. Organized final experiment notebooks
 
-- Project Setup
-- Inspection of MSD-I Metadata
-- Verification of Audio Feature Alignment
-- Feature Quality Validation
-- Extraction and Alignment of Audio and Visual Embeddings
+The staged notebooks give a more direct path through the final analyses. The labels **Stage 1–5** refer to this organized verification sequence and should not be confused with section or stage numbers inside the older development notebook.
 
-These sections investigate the dataset,
-feature dimensions, track identifiers,
-and alignment of the available embeddings.
+| Final notebook | Verification focus | Key data boundary |
+|---|---|---|
+| [Stage 1: Logistic regression and fusion](beyond_audio_final_experiments_stage1.ipynb) | Refit CNN/MM and combined-representation logistic-regression models; compare early and late fusion, metrics, and selected original checkpoints | Uses prepared feature matrices and labels, with original artifacts for selected comparisons |
+| [Stage 2: Neural networks](beyond_audio_final_experiments_stage2.ipynb) | Refit CNN/MM early-fusion neural networks and compare saved predictions | Uses prepared embeddings and original checkpoint/scaler files for historical comparisons |
+| [Stage 3: Visual typicality and bootstrap](beyond_audio_final_experiments_stage3.ipynb) | Reconstruct quintiles, rescue/harm transitions, and artist-cluster intervals | Uses **original frozen test predictions**, not automatically the new Stage 1 predictions |
+| [Stage 4: Artwork overlap sensitivity](beyond_audio_final_experiments_stage4.ipynb) | Check metadata, current split membership, and saved hash candidates; exclude flagged test tracks | Uses the **saved candidate list** and Stage 3 outputs; no independent upstream image-hash generation |
+| [Stage 5: Figures and tables](beyond_audio_final_experiments_stage5.ipynb) | Recalculate ten classification model results, per-genre F1, main figure data, and supplementary tables | Uses original CNN/MM/NN predictions and verified Stage 3–4 outputs |
 
-## 2. Classification Baselines and Fusion
+Each stage saves new results to a corresponding `finetuning_experiments/reproducible_stageN_2026/` directory in the **external project workspace**, not to this GitHub repository. Rerunning a stage may replace files in its own output directory, so previously verified outputs should be backed up where necessary.
 
-Notebook sections:
+## 3. How the final experiments support the paper
 
-- Audio-Only Baseline: Logistic Regression
-- Visual-Only Baseline: Logistic Regression
-- Early Fusion: Combining Audio and Visual Features
-- Fixed Late Fusion: Weighted Probability Averaging
-- Confidence-Adaptive Late Fusion
-- Final Evaluation on the Held-Out Test Set
+- **Overall classification comparisons:** Stage 1 and Stage 5 evaluate audio-only, visual-only, early-fusion, fixed/adaptive late-fusion, and all-four-representation logistic-regression results. Stage 2 covers CNN/MM neural networks.
+- **Visual typicality:** Stage 3 reconstructs genre-relative quintiles using standardized CNN visual embeddings and **true genre labels**. The analysis is retrospective, exploratory, and does not provide an inference-time reliability signal.
+- **Prediction-level behavior:** Stage 3 reconstructs rescued and harmed classifications for CNN and MM fusion models. Stage 5 verifies the corresponding tables and visual-only agreement values.
+- **Statistical uncertainty:** Stage 3 reconstructs artist-cluster bootstrap estimates and confidence intervals using **3,000 artist-level resamples** for the main typicality analysis.
+- **Robustness:** Stage 4 verifies the saved artwork candidate-pair mapping and sensitivity of reported fusion gains to excluding four flagged test recordings. The upstream perceptual hashes were not independently regenerated.
+- **Figures and supplementary results:** Stage 5 checks data for confusion matrices, the typicality-gain plot, absolute-accuracy curves, genre-specific F1 scores, and selected example labels. The original artwork source URLs were not independently reverified.
 
-These experiments establish the principal
-classification baselines and compare
-alternative multimodal fusion strategies.
+## 4. Verification records and limits
 
-The held-out test evaluation produces
-files including:
+The notebook outputs and [reproducibility verification record](../REPRODUCIBILITY_VERIFICATION.md) document successful numerical checks with the team's existing dataset and artifacts. In the recorded Tesla T4 environment, Stage 2 reproduced the original CNN/MM neural-network **class predictions** for all 1,836 validation and 1,792 test recordings.
 
-- final_test_metrics.csv
-- final_test_predictions.csv
+These checks should **not** be described as completely independent replication on a new dataset or a standalone raw-data-to-paper build. Source embeddings, saved predictions, model checkpoints, and candidate-artwork files remain necessary external inputs.
 
-## 3. Representation Comparisons
+For the required file paths, environment notes, and execution sequence, see [REPRODUCE.md](../REPRODUCE.md) and [DATA_AND_REPRODUCIBILITY.md](DATA_AND_REPRODUCIBILITY.md).
 
-The notebook also contains an experiment
-sequence labelled "EXPERIMENT 2".
+## 5. Development history and attribution
 
-It examines alternative combinations of CNN
-and MM embeddings.
-
-The main relevant stages include:
-
-- Feature inspection and alignment
-- Validation-based model selection
-- Final test evaluation
-- Visual-typicality analysis
-- Paired bootstrap comparisons
-
-Relevant outputs include:
-
-- representation_final_test_metrics.csv
-- representation_final_test_predictions.csv
-- representation_macro_f1_bootstrap.csv
-
-## 4. Neural-Network Experiments
-
-The section labelled "STAGE 6" contains
-the CNN and MM feedforward neural-network
-experiments.
-
-It includes:
-
-- Training-data standardization
-- Neural-network architecture definitions
-- Model training and checkpoint selection
-- Validation evaluation
-- Held-out test evaluation
-- Confusion matrices and per-genre metrics
-
-Relevant outputs include:
-
-- neural_network_test_metrics.csv
-- neural_network_test_predictions.csv
-- final_per_genre_metrics.csv
-
-## 5. Data Integrity and Robustness
-
-Later notebook cells revisit the original
-dataset and feature archive.
-
-These investigations include:
-
-- Original partition verification
-- Exact feature-row alignment
-- Album-identifier and image-URL checks
-- Perceptual-hash overlap analysis
-- Sensitivity to candidate near-duplicate artwork
-- Reconstruction of visual-typicality assignments
-
-These checks support the data-integrity
-and robustness sections of the report.
-
-## 6. Prediction-Level and Statistical Analysis
-
-The later analysis sections include:
-
-- Audio-to-fusion prediction transitions
-- CNN versus MM fusion comparisons
-- Artist-cluster bootstrap for fusion gains
-- Q1 versus Q5 accuracy-gain contrasts
-- Visual-typicality subgroup analysis
-
-Relevant outputs include:
-
-- cnn_mm_paired_transitions.csv
-- cnn_mm_quintile_transitions.csv
-- overall_fusion_gain_cluster_bootstrap.csv
-- quintile_fusion_gain_cluster_bootstrap.csv
-- q1_q5_fusion_gain_contrasts.csv
-
-The final typicality-related bootstrap
-analyses use 3,000 artist-level resamples.
-
-Other model-comparison analyses use
-different resampling configurations,
-as documented in the research paper.
-
-## 7. Research Figures
-
-The notebook includes code for generating:
-
-- Classification confusion matrices
-- Fusion gains across typicality quintiles
-- Rescued and harmed prediction comparisons
-- Selected album-cover examples
-- Supplementary feature visualizations
-
-These figures support the main report
-and appendices.
-
-## 8. Important Reproducibility Notes
-
-Some intermediate notebook experiments
-were corrected or replaced by later analyses.
-
-The notebook was not originally designed
-as a single clean, top-to-bottom execution
-pipeline.
-
-Some sections load intermediate CSV files,
-NumPy arrays, or saved model checkpoints
-generated by earlier experiments.
-
-The final reported results must therefore
-be connected to the corresponding saved
-outputs and verified execution steps.
-
-The original Colab notebook is preserved
-as development documentation. A cleaner
-reproducible workflow is being prepared
-separately.
-
-## 9. Development History
-
-The GitHub repository was created after
-the initial research had been conducted
-in Google Colab.
-
-GitHub commits record subsequent changes.
-The notebook preserves earlier experiments
-and corrections but does not, by itself,
-establish their chronological development.
-
-Team contributions and AI-assisted work
-will be documented transparently.
+GitHub history records work committed after the initial Colab research. It does not establish the chronology of earlier experiments or attribute exact contributions by itself. The project team remains responsible for the submitted work; AI-assisted development is disclosed in the [project README](../README.md).
