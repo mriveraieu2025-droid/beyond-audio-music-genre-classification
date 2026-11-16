@@ -1,3 +1,41 @@
+# Reproducibility Verification Record
+
+This document records checks performed against the team's original MSD-I project files and saved artifacts in Google Colab. The stages are not an independent replication on new data or a self-contained raw-data-to-paper execution pipeline.
+
+## Stage 1: Logistic-Regression and Fusion Checks
+
+### Overview
+
+The organized Stage 1 notebook fitted CNN and MM downstream logistic-regression classifiers and validation-selected fusion strategies using the prepared, artist-disjoint dataset partitions.
+
+Recorded split sizes were 8,242 training, 1,836 validation and 1,792 test recordings. The notebook checked alignment of the CNN and MM feature matrices, labels, track identifiers and artist-disjoint partitions.
+
+### Recorded Test Results
+
+| Configuration | Accuracy | Balanced accuracy | Macro-F1 |
+|---|---:|---:|---:|
+| CNN Audio LR | 65.90% | 62.36% | 64.07% |
+| CNN Visual LR | 47.60% | 44.76% | 46.34% |
+| CNN Early Fusion LR | 69.64% | 67.39% | 68.68% |
+| MM Audio LR | 66.52% | 63.13% | 64.64% |
+| MM Early Fusion LR | 70.20% | 67.30% | 69.10% |
+| All Four LR | 69.48% | **67.51%** | 68.69% |
+| CNN Fixed Late Fusion | 68.69% | 65.02% | 67.29% |
+| CNN Adaptive Late Fusion | 68.30% | 64.97% | 67.08% |
+
+The recorded validation-selected fixed late-fusion audio weight was 0.55, and the adaptive selection was beta = 0.5, gamma = 1.
+
+### Comparisons with Original Artifacts
+
+The saved Stage 1 diagnostic results report zero differing test predictions between newly fitted and original saved outputs for **CNN Early Fusion LR** and **All Four LR**. For these selected checkpoints, the recorded scaler means and classifier coefficients also matched those of the original saved models. One historical CNN checkpoint had `random_state=None` while the reconstructed model had `random_state=42`; the observed fitted coefficients and predictions nevertheless agreed.
+
+These checkpoint comparisons cover the named models, not every model configuration. The saved notebook has no execution count or output stored for the logistic-regression model-fitting cell, although later cells contain the resulting model predictions and comparisons. This limits what the saved notebook alone establishes about an entirely fresh, sequential run.
+
+### Interpretation
+
+Stage 1's recorded results are consistent with the reported baseline and fusion comparisons, but the verification uses the team's existing prepared features and, for some checks, saved original predictions and checkpoints.
+
+---
 
 ## Stage 2: Neural-Network Reproducibility
 
@@ -306,7 +344,18 @@ The verification used the original candidate file. It did not independently rege
 
 ### Sensitivity Analysis
 
-We excluded the four flagged test recordings without retraining the models or changing their
+The exclusion sensitivity was evaluated from the original frozen test predictions, **without retraining the classifiers**. The four flagged test recordings were removed from the evaluation subset, reducing the sample size from 1,792 to 1,788.
+
+| Quantity | Full test set | Excluding flagged tracks |
+|---|---:|---:|
+| CNN early-fusion gain | +3.74 pp | +3.64 pp |
+| MM early-fusion gain | +3.68 pp | +3.58 pp |
+| CNN gain in Q1 | +17.45 pp | +17.04 pp |
+| CNN gain in Q5 | −19.72 pp | −19.72 pp |
+
+Three flagged test recordings belonged to Q1 and one to Q3; none belonged to Q5. The same original retrospective quintile assignments were retained, and therefore the Q5 results were unchanged.
+
+The overall gains changed only slightly, so the four **identified candidate** overlaps do not account for the observed multimodal advantage. This analysis does not eliminate the possibility of other near-duplicate artwork or independent data-quality issues.
 
 
 ## Stage 5: Research Figures and Paper Consistency
@@ -327,8 +376,15 @@ All ten reported model configurations were
 independently evaluated from their saved predictions.
 
 The reconstructed accuracy, balanced accuracy,
-and macro-F1 scores matched Table 2 of the
-research paper to its reported precision.
+and macro-F1 scores were compared with the report's
+reference values. The saved verification run used
+a reference of 67.52% for the All Four LR balanced
+accuracy, while the original model output displayed
+67.51%. The Stage 1 and Stage 5 notebook reference
+values have since been corrected to **67.51%**.
+The saved Stage 5 output has not been regenerated
+after this reference-value edit; the cached output
+should not be mistaken for a new post-correction run.
 
 The highest-performing model remained
 MM Early Fusion LR:
@@ -465,17 +521,20 @@ Google Colab to verify the downstream analyses.
 
 ### Stage 5: Final Tables and Figures
 
-- All 10 Table 2 model results matched the report
-  at its stated two-decimal precision.
+- Metrics for all 10 Table 2 configurations were
+  computed from frozen predictions; the All Four LR
+  balanced-accuracy reference was subsequently corrected
+  to 67.51% in both notebook sources.
 - Genre-specific F1 scores in Table 7 verified.
 - Figure 1 reconstructed from saved predictions.
 - Figure 2 bootstrap estimates and intervals verified.
 - Figure 3 accuracy values verified.
 - Tables 3, 4, 8, 9 and 10 verified.
 - Figure 4 track IDs, genres and predictions verified.
-- Figure 4 artwork and visual layout still require
-  human inspection; image URLs were not independently
-  retrieved.
+- Figure 4 track/genre/prediction metadata were verified;
+  a prior visual inspection is described above. The
+  fresh-runtime audit did not independently retrieve or
+  verify source artwork URLs.
 
 ### Conclusion
 
