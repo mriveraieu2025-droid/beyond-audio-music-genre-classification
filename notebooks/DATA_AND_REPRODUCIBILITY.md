@@ -110,7 +110,7 @@ Files referenced by the final notebooks include:
 
 All paths in this table are relative to `finetuning_experiments/` under the Google Drive project root. Some original files serve as comparison references and may be optional in specific notebook cells; other saved inputs are required for the later stages.
 
-The original exploratory [development notebook](beyond_audio_colab_development.ipynb) contains preliminary, corrected, and final experiment sequences. It should not be treated as a guaranteed clean, top-to-bottom production pipeline.
+The original exploratory [development notebook](../archive/beyond_audio_colab_development.ipynb) contains preliminary, corrected, and final experiment sequences. It should not be treated as a guaranteed clean, top-to-bottom production pipeline.
 
 ## 5. Five-stage reconstruction and generated outputs
 

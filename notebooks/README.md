@@ -1,7 +1,7 @@
 
 # Beyond Audio — Experiment Notebooks
 
-This directory contains the Python notebooks supporting the experiments in *Beyond Audio: Music Genre Classification*.
+This directory contains the eight core and supplementary Python notebooks supporting the experiments in *Beyond Audio: Music Genre Classification*. The original exploratory development notebook is preserved separately in [`archive/`](../archive/).
 
 The repository separates the final experiments from the original exploratory development work.
 
@@ -39,7 +39,7 @@ The three supplementary notebooks currently committed to GitHub contain executab
 
 ## 3. Original Development Notebook
 
-[Original Colab Development](beyond_audio_colab_development.ipynb)
+[Original Colab Development](../archive/beyond_audio_colab_development.ipynb)
 
 This notebook preserves the original exploratory research.
 

@@ -238,7 +238,7 @@ These notebooks support additional experiments reported in the appendices.
 
 ### Original Development Notebook
 
-[Original Colab Development](notebooks/beyond_audio_colab_development.ipynb)
+[Original Colab Development](archive/beyond_audio_colab_development.ipynb)
 
 This notebook documents the exploratory development of the project.
 

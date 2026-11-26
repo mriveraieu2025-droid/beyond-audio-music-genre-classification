@@ -138,7 +138,7 @@ The three supplementary notebooks currently stored on GitHub contain executable 
 
 ## 5. Original Development Notebook
 
-**Notebook:** [beyond_audio_colab_development.ipynb](beyond_audio_colab_development.ipynb)
+**Notebook:** [beyond_audio_colab_development.ipynb](../archive/beyond_audio_colab_development.ipynb)
 
 This notebook preserves the original exploratory development of the project.
 
