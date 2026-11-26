@@ -1,116 +1,288 @@
+
 # Reproducing the Experiments
 
-## Scope and current verification status
+**Project:** Beyond Audio: Music Genre Classification  
+**Machine Learning Final Project — IE University, November 2026**
 
-This repository contains five staged Google Colab notebooks that reconstruct and check the experiments reported in **Beyond Audio: Music Genre Classification**, together with the original exploratory development notebook.
+## 1. Purpose and Scope
 
-The team has run the staged workflow using the **existing MSD-I project files and experimental artifacts** in Google Drive. The saved notebook outputs and [reproducibility verification record](REPRODUCIBILITY_VERIFICATION.md) document the resulting checks, including neural-network prediction-level reproduction and downstream numerical consistency.
+This document explains how to execute the experiments reported in *Beyond Audio: Music Genre Classification*.
 
-**Important distinction:** This is a documented, data-dependent reconstruction and verification workflow, **not** a self-contained pipeline that starts with raw MSD-I data and automatically regenerates every research artifact. A fully independent execution in a newly provisioned environment remains unverified.
+The repository contains:
 
-## 1. Environment
+- Five core experiment and verification notebooks.
+- Three supplementary verification notebooks.
+- One original exploratory development notebook.
+- Documentation of dataset provenance, experimental results, and reproducibility limitations.
 
-The experiments were developed in **Google Colab**. Recorded environments include:
+The five core notebooks cover classification, fusion, neural networks, visual typicality, statistical analysis, artwork sensitivity, and research figures.
+
+The supplementary notebooks investigate:
+
+1. Class-weighted neural networks.
+2. Alternative MM-based visual typicality.
+3. Neural-network stability across five random seeds.
+
+**Important:** The repository provides documented reconstruction and verification workflows using the team's existing research data.
+
+It is not a self-contained pipeline that automatically regenerates every result directly from the original MSD-I archive.
+
+Some notebooks require original saved predictions, trained model artifacts, or intermediate files.
+
+## 2. Software Environment
+
+The experiments were developed using Google Colab and Python.
+
+### Recorded Environments
 
 | Workflow | Recorded environment |
 |---|---|
 | Stage 1 and Stages 3–5 | Python 3.13.18, NumPy 2.4.6, pandas 2.2.3, scikit-learn 1.6.1 |
-| Successful Stage 2 Tesla T4 reproduction | Python 3.13.16, PyTorch 2.14.1+cu130, NVIDIA Tesla T4 GPU |
-| Earlier Stage 2 CPU execution | PyTorch 2.14.1+cpu (the precise execution conditions differ) |
+| Successful neural-network reproduction | Python 3.13.16, PyTorch 2.14.1+cu130, NVIDIA Tesla T4 |
+| Five-seed neural-network analysis | Python 3.13.16, PyTorch 2.14.1+cu130, NVIDIA Tesla T4 |
 
-These are **recorded versions**, not a lockfile or a guarantee of identical behavior across hardware. A separate CPU run produced different neural-network training results; the cause was not isolated.
+The recorded software versions describe environments used during verification. They do not constitute a fully pinned installation.
 
-The list of dependency names is in [`notebooks/requirements.txt`](notebooks/requirements.txt). A conventional installation command is:
+Python dependencies are listed in:
+
+[notebooks/requirements.txt](notebooks/requirements.txt)
+
+Install them, where appropriate, using:
 
 ```bash
 python -m pip install -r notebooks/requirements.txt
 ```
 
-The requirements are not version-pinned. In Colab, confirm the installed PyTorch/CUDA build before changing the preinstalled GPU packages; an unrestricted installation does not necessarily reproduce the verified Tesla T4 environment.
+In Google Colab, inspect the installed PyTorch and CUDA versions before modifying GPU-related packages.
 
-## 2. Data access and directory setup
+Different hardware or software environments may produce different neural-network training outcomes.
 
-The repository **does not include** the original MSD-I feature archive, prepared feature matrices, labels, research checkpoints, saved predictions, artwork metadata, or perceptual-hash candidate files. These must be obtained separately from authorized sources or the team's existing research workspace, subject to the applicable distribution terms.
+The successful Tesla T4 configuration reproduced the original seed-42 neural-network class predictions, but exact reproduction across all environments is not guaranteed.
 
-By default, the notebooks expect the project root:
+## 3. Required Data
+
+### Dataset
+
+The experiments use a six-genre subset of MSD-I.
+
+The dataset contains 11,870 recordings across Electronic, Jazz, Metal, Pop, Rap, and Rock.
+
+The original artist-disjoint experimental partitions are preserved.
+
+| Partition | Recordings |
+|---|---:|
+| Training | 8,242 |
+| Validation | 1,836 |
+| Test | 1,792 |
+| Total | 11,870 |
+
+### Feature Representations
+
+Four precomputed representations are used:
+
+| Representation | Dimensions |
+|---|---:|
+| CNN audio | 2,048 |
+| CNN visual | 2,048 |
+| MM audio | 200 |
+| MM visual | 200 |
+
+The project trains downstream classifiers on these representations.
+
+It does not train the original feature-extraction models.
+
+### Data Availability
+
+The repository does not include:
+
+- Original MSD-I feature archives.
+- Prepared audio and visual feature matrices.
+- Original track and artist metadata.
+- Saved model predictions.
+- Trained model checkpoints.
+- Original perceptual-hash candidate files.
+- Selected intermediate analysis files.
+
+These inputs must be obtained from authorized sources or the team's existing project workspace.
+
+## 4. Google Drive Project Structure
+
+The default Google Colab project directory is:
 
 ```text
 /content/drive/MyDrive/MSD-I_project
 ```
 
-They also honor the environment variable `MSDI_PROJECT_DIR` if the project files are elsewhere. Within the project root, the main directories are:
+The notebooks also support an alternative location through the environment variable:
+
+`MSDI_PROJECT_DIR`
+
+The main experimental directories are:
 
 ```text
-finetuning_experiments/
-    multimodal_artist_disjoint/       # CNN representations, labels and saved CNN results
-    oramas_representation_experiment/ # MM representations, labels and saved representation results
-    neural_network_experiments/       # Original NN artifacts and predictions
-    reproducible_stage1_2026/        # Stage 1 outputs
-    reproducible_stage2_2026/        # Stage 2 outputs
-    reproducible_stage3_2026/        # Stage 3 outputs
-    reproducible_stage4_2026/        # Stage 4 outputs
-    reproducible_stage5_2026/        # Stage 5 outputs
+MSD-I_project/
+|
+|-- audio_features/
+|   |-- msdi-data.tar.gz
+|   |-- MSD-I_dataset.tsv
+|
+|-- finetuning_experiments/
+|   |
+|   |-- multimodal_artist_disjoint/
+|   |-- oramas_representation_experiment/
+|   |-- neural_network_experiments/
+|   |
+|   |-- reproducible_stage1_2026/
+|   |-- reproducible_stage2_2026/
+|   |-- reproducible_stage3_2026/
+|   |-- reproducible_stage4_2026/
+|   |-- reproducible_stage5_2026/
+|   |
+|   |-- reproducible_weighted_nn_2026/
+|   |-- mm_visual_typicality_robustness_2026/
+|   |-- multiseed_nn_stability_2026/
+|
+|-- clean_album_metadata.csv
+|-- album_perceptual_hashes.csv
+|-- near_duplicate_candidates.csv
 ```
 
-### Prepared feature and label files
+The original data and research-artifact folders must already exist.
 
-For each split `train`, `val`, and `test`, Stage 1 expects the following inside `multimodal_artist_disjoint/`:
+The output directories shown above are the locations used by the corresponding notebooks. They are created during execution when necessary.
 
-- `labels_<split>.csv`
-- `X_<split>_audio.npy` (CNN audio, 2,048 features)
-- `X_<split>_visual.npy` (CNN visual, 2,048 features)
+Their contents are not committed to this GitHub repository.
 
-Inside `oramas_representation_experiment/`, it expects:
+### Prepared CNN Features
 
-- `labels_<split>.csv`
-- `X_<split>_mm-audio.npy` (MM audio, 200 features)
-- `X_<split>_mm-visual.npy` (MM visual, 200 features)
+For each partition `train`, `val`, and `test`, the following files are expected in:
 
-The feature rows and metadata must correspond to the original **artist-disjoint** experimental splits: 8,242 training, 1,836 validation, and 1,792 test recordings, covering six genres. The notebooks contain checks for shapes, identifiers, and alignment.
+`finetuning_experiments/multimodal_artist_disjoint/`
 
-Stage-specific saved predictions, original checkpoints, additional metadata, and intermediate analysis files are described below. The [data and reproducibility guide](notebooks/DATA_AND_REPRODUCIBILITY.md) gives further provenance information.
+```text
+labels_train.csv
+labels_val.csv
+labels_test.csv
 
-## 3. Execution order and dependencies
+X_train_audio.npy
+X_val_audio.npy
+X_test_audio.npy
 
-Open each notebook from the [`notebooks/` directory](notebooks/) in Google Colab. Mount the authorized Google Drive workspace, check the project root, and execute its cells in order. Each notebook checks for some of its required input files before proceeding.
+X_train_visual.npy
+X_val_visual.npy
+X_test_visual.npy
+```
 
-**Do not assume that the output of one fresh run automatically replaces the original frozen predictions used by later verification stages.** These stages intentionally preserve comparison with the original research results.
+### Prepared MM Features
 
-| Stage | Notebook | Main function | Important dependencies |
-|---|---|---|---|
-| **1 — Logistic regression** | [Stage 1](notebooks/beyond_audio_final_experiments_stage1.ipynb) | Train CNN/MM baselines and early/late fusion models; tune on validation; compare test metrics and selected saved checkpoints | Prepared CNN/MM features and labels; original prediction/checkpoint files for later comparison cells |
-| **2 — Neural networks** | [Stage 2](notebooks/beyond_audio_final_experiments_stage2.ipynb) | Train CNN and MM fusion MLPs; choose checkpoints using validation macro-F1; compare validation/test predictions | Prepared CNN/MM features and labels; original neural-network checkpoints and scalers for original-vs-new comparisons |
-| **3 — Visual typicality** | [Stage 3](notebooks/beyond_audio_final_experiments_stage3.ipynb) | Reconstruct typicality quintiles, rescue/harm transitions, and artist-cluster bootstrap intervals | Original saved CNN/MM test predictions, CNN visual features, labels; optional original typicality/bootstrap CSVs for cross-checking |
-| **4 — Artwork robustness** | [Stage 4](notebooks/beyond_audio_final_experiments_stage4.ipynb) | Check metadata, artwork candidate overlaps, and sensitivity after excluding flagged recordings | Original MSD-I metadata, clean album metadata, saved perceptual hashes and candidate pairs, labels, and Stage 3 paired predictions |
-| **5 — Tables and figures** | [Stage 5](notebooks/beyond_audio_final_experiments_stage5.ipynb) | Recalculate reported metrics, genre F1, transitions, and figure data | Original frozen CNN/MM/NN predictions plus verified Stage 3 and Stage 4 analysis outputs |
+The following files are expected in:
 
-### Stage 1 — Logistic regression and fusion
+`finetuning_experiments/oramas_representation_experiment/`
 
-- Validates the splits and all four embedding matrices.
-- Selects logistic-regression regularization parameters by **validation macro-F1**.
-- Selects fixed and adaptive late-fusion settings on the validation partition.
-- Evaluates the held-out test set and saves new models, predictions, and metrics under `finetuning_experiments/reproducible_stage1_2026/`.
-- Later diagnostic cells compare certain newly fitted models and predictions with original saved artifacts. These comparisons require the original files to be present.
+```text
+labels_train.csv
+labels_val.csv
+labels_test.csv
 
-### Stage 2 — Neural networks
+X_train_mm-audio.npy
+X_val_mm-audio.npy
+X_test_mm-audio.npy
 
-- Uses training-only standardization and validation-selected checkpoints for CNN (4,096-dimensional early fusion) and MM (400-dimensional early fusion).
-- Saves trained models, scalers, histories, predictions, and evaluation results under `finetuning_experiments/reproducible_stage2_2026/`.
-- Comparison cells use original checkpoints in `finetuning_experiments/neural_network_experiments/`.
-- The documented **Tesla T4 reproduction** selected epochs **5 (CNN)** and **28 (MM)** and matched original class predictions for **all 1,836 validation and 1,792 test recordings** for both models. This is prediction agreement, not a claim that every model parameter or probability must match in every environment.
+X_train_mm-visual.npy
+X_val_mm-visual.npy
+X_test_mm-visual.npy
+```
 
-### Stage 3 — Visual typicality and bootstrap
+The feature rows and metadata must be correctly aligned.
 
-- Uses the **original saved test predictions**, not automatically the newly fitted Stage 1 predictions.
-- Recomputes cosine distances to true-genre training centroids and genre-relative typicality quintiles.
-- Recalculates rescued/harmed counts and artist-cluster bootstrap intervals (3,000 resamples).
-- Saves outputs under `finetuning_experiments/reproducible_stage3_2026/`.
+The notebooks check expected dimensions, identifiers, partition membership, and relevant artist-disjoint conditions before performing their analyses.
 
-The typicality analysis uses the **true test genres**, so it is retrospective and exploratory; its grouping procedure is not a deployable inference-time method.
+Additional original prediction files and model artifacts are described in [DATA_AND_REPRODUCIBILITY.md](notebooks/DATA_AND_REPRODUCIBILITY.md).
 
-### Stage 4 — Data integrity and near-duplicate sensitivity
+## 5. Core Experiment Notebooks
 
-In addition to the stage directories, this notebook requires these files at the project root:
+The five organized notebooks are located in the [notebooks directory](notebooks/).
+
+The recommended execution sequence is Stage 1 through Stage 5.
+
+However, these stages do not form a completely automated pipeline: some downstream analyses intentionally use original frozen predictions rather than automatically consuming newly trained models.
+
+### Stage 1 — Classification and Fusion
+
+**Notebook:** [Stage 1](notebooks/beyond_audio_final_experiments_stage1.ipynb)
+
+This notebook:
+
+- Loads and checks CNN and MM features.
+- Trains audio-only and multimodal logistic-regression models.
+- Evaluates visual-only classification using CNN features.
+- Evaluates the concatenation of all four representations.
+- Tunes regularization parameters using validation macro-F1.
+- Evaluates fixed and confidence-adaptive late fusion.
+- Compares selected results with original saved research artifacts.
+
+**Main inputs:** Prepared CNN/MM matrices and labels. Original predictions and checkpoints are needed for historical comparison cells.
+
+**Output directory:**
+
+`finetuning_experiments/reproducible_stage1_2026/`
+
+### Stage 2 — Neural Networks
+
+**Notebook:** [Stage 2](notebooks/beyond_audio_final_experiments_stage2.ipynb)
+
+This notebook:
+
+- Prepares CNN and MM early-fusion features.
+- Fits feature standardization using training data only.
+- Trains two feedforward neural networks.
+- Selects checkpoints using validation macro-F1.
+- Evaluates the held-out test data.
+- Compares reproduced predictions with original saved model outputs.
+
+**Main inputs:** Prepared features, labels, and original neural-network checkpoints or scalers for historical comparison.
+
+**Output directory:**
+
+`finetuning_experiments/reproducible_stage2_2026/`
+
+The successful Tesla T4 reproduction matched the original validation and test class predictions for both neural networks.
+
+### Stage 3 — Visual Typicality and Statistical Analysis
+
+**Notebook:** [Stage 3](notebooks/beyond_audio_final_experiments_stage3.ipynb)
+
+This notebook:
+
+- Reconstructs genre-relative visual-typicality quintiles.
+- Recalculates rescued and harmed predictions.
+- Evaluates fusion gains across Q1–Q5.
+- Computes artist-cluster bootstrap confidence intervals.
+- Verifies Q1–Q5 contrasts.
+
+**Main inputs:** CNN visual features, training/test labels, and original frozen CNN/MM model predictions.
+
+**Output directory:**
+
+`finetuning_experiments/reproducible_stage3_2026/`
+
+Stage 3 intentionally uses the original saved predictions and does not automatically replace them with freshly fitted Stage 1 outputs.
+
+The analysis requires true genre labels and is retrospective rather than a prediction-time procedure.
+
+### Stage 4 — Artwork-Overlap Sensitivity
+
+**Notebook:** [Stage 4](notebooks/beyond_audio_final_experiments_stage4.ipynb)
+
+This notebook:
+
+- Checks experimental partition integrity.
+- Examines original artwork metadata.
+- Reconstructs candidate training-test artwork overlaps.
+- Evaluates the exclusion of four flagged test recordings.
+- Compares the resulting fusion gains.
+
+**Additional required files:**
 
 ```text
 audio_features/MSD-I_dataset.tsv
@@ -119,52 +291,221 @@ album_perceptual_hashes.csv
 near_duplicate_candidates.csv
 ```
 
-It also requires `reproducible_stage3_2026/stage3_paired_test_predictions_and_typicality.csv` under `finetuning_experiments/`.
+Stage 4 also requires:
 
-The Stage 4 checks use **saved perceptual-hash candidates**: the original hash generation is not rerun, and the candidate list is not an exhaustive duplicate-artwork search. The recorded sensitivity excludes four flagged test recordings; it does not retrain the classifiers.
+```text
+finetuning_experiments/
+    reproducible_stage3_2026/
+        stage3_paired_test_predictions_and_typicality.csv
+```
 
-### Stage 5 — Paper tables and figures
+**Output directory:**
 
-- Reads **original frozen CNN/MM/NN prediction files**, plus Stage 3 prediction/transition/bootstrap outputs and Stage 4 sensitivity outputs.
-- Recalculates metrics for the ten reported model configurations, genre-specific F1 scores, and additional fusion-analysis tables.
-- Generates supplementary figure files and tables under `finetuning_experiments/reproducible_stage5_2026/`.
-- Checks six illustrative examples against saved metadata; the correspondence of artwork images to original source URLs was not independently reverified.
+`finetuning_experiments/reproducible_stage4_2026/`
 
-## 4. Recorded consistency checks
+This is a sensitivity analysis based on previously saved perceptual-hash candidates.
 
-The experiment record includes:
+It does not independently regenerate the full hash search or retrain the classifiers.
 
-| Check | Recorded result |
+### Stage 5 — Research Tables and Figures
+
+**Notebook:** [Stage 5](notebooks/beyond_audio_final_experiments_stage5.ipynb)
+
+This notebook:
+
+- Recalculates the ten main classification results.
+- Checks genre-specific F1 scores.
+- Reconstructs confusion matrices.
+- Reconstructs visual-typicality performance figures.
+- Verifies prediction-transition and supplementary tables.
+- Checks selected qualitative album-cover examples against saved metadata.
+
+**Main inputs:** Original frozen CNN/MM/NN predictions and relevant Stage 3–4 outputs.
+
+**Output directory:**
+
+`finetuning_experiments/reproducible_stage5_2026/`
+
+The notebook checks numerical consistency with the report. It does not independently verify every original album-cover image URL.
+
+## 6. Supplementary Verification Notebooks
+
+The supplementary notebooks support experiments reported in the appendices.
+
+They can be run after the necessary prepared inputs are available.
+
+### Supplementary Experiment 1 — Class-Weighted Neural Networks
+
+**Notebook:** [Weighted NN Verification](notebooks/weighted_nn_verification_colab.ipynb)
+
+**Report reference:** Section 4.1 and Appendix B.3.
+
+This notebook:
+
+- Reconstructs the original CNN and MM neural-network architectures.
+- Calculates class weights from training labels.
+- Trains weighted and unweighted variants using seed 42.
+- Compares validation and test metrics.
+- Checks the reported class-weighting results.
+
+**Required inputs:** Prepared train, validation, and test CNN/MM feature matrices and labels.
+
+Stage 2 predictions may optionally be used for additional comparison checks.
+
+**Output directory:**
+
+`finetuning_experiments/reproducible_weighted_nn_2026/`
+
+The experiment reconstructs the weighted-training procedure. It does not establish access to the original historical weighted-training history.
+
+### Supplementary Experiment 2 — Alternative Visual Typicality
+
+**Notebook:** [MM Visual-Typicality Robustness](notebooks/mm_visual_typicality_robustness_colab.ipynb)
+
+**Report reference:** Section 4.3 and Appendix D.
+
+This notebook:
+
+- Constructs visual-typicality groups using MM visual embeddings.
+- Uses training-set genre centroids.
+- Retains original frozen classifier predictions.
+- Compares CNN-based and MM-based typicality assignments.
+- Computes paired artist-cluster bootstrap intervals.
+
+**Required inputs:**
+
+- CNN/MM training and test metadata.
+- MM training and test visual embeddings.
+- Verified Stage 3 paired prediction/typicality output.
+
+In particular, the notebook expects:
+
+```text
+finetuning_experiments/
+    reproducible_stage3_2026/
+        stage3_paired_test_predictions_and_typicality.csv
+```
+
+**Output directory:**
+
+`finetuning_experiments/mm_visual_typicality_robustness_2026/`
+
+Run Stage 3 successfully before this notebook.
+
+Both grouping definitions use true genre labels and are retrospective.
+
+### Supplementary Experiment 3 — Multi-Seed Neural-Network Stability
+
+**Notebook:** [Multi-Seed NN Stability](notebooks/beyond_audio_multiseed_nn_stability_colab.ipynb)
+
+**Report reference:** Sections 4.1 and 4.5, and Appendix D.
+
+This notebook:
+
+- Trains unweighted CNN and MM neural networks.
+- Uses seeds 42, 43, 44, 45, and 46.
+- Retains the original architectures and hyperparameters.
+- Selects checkpoints using validation macro-F1.
+- Evaluates each predefined run on the held-out test set.
+- Reports cross-seed means and sample standard deviations.
+
+**Required inputs:** Prepared CNN/MM feature matrices and labels for all three data partitions.
+
+Saved Stage 2 predictions are optional for the seed-42 reproduction comparison.
+
+**Output directory:**
+
+`finetuning_experiments/multiseed_nn_stability_2026/`
+
+The recorded experiment was executed in a Tesla T4 environment.
+
+The analysis measures training-initialization sensitivity using a fixed data split.
+
+It does not establish generalization across independent datasets.
+
+## 7. Recommended Execution Order
+
+For a reviewer with access to the original project workspace:
+
+| Order | Notebook | Dependency |
+|---|---|---|
+| 1 | Stage 1 | Prepared features and original comparison artifacts |
+| 2 | Stage 2 | Prepared features and original NN artifacts |
+| 3 | Stage 3 | Original frozen predictions |
+| 4 | Stage 4 | Stage 3 outputs and saved artwork candidates |
+| 5 | Stage 5 | Original predictions and Stage 3–4 outputs |
+| 6 | Weighted NN Verification | Prepared features; Stage 2 comparison optional |
+| 7 | MM Visual-Typicality Robustness | Stage 3 outputs required |
+| 8 | Multi-Seed NN Stability | Prepared features; Stage 2 comparison optional |
+
+The supplementary weighted and multi-seed experiments are computationally independent of the full five-stage sequence, apart from optional historical comparisons.
+
+The alternative MM-typicality experiment requires a verified Stage 3 output.
+
+Before running a notebook, inspect its input-file checks and ensure that the required external research artifacts are available.
+
+## 8. Verification Evidence
+
+The recorded verification results include:
+
+| Check | Result |
 |---|---|
-| Split sizes | 8,242 train / 1,836 validation / 1,792 test |
-| CNN audio-only test accuracy | 65.90% |
-| CNN early-fusion test accuracy | 69.64% |
-| MM audio-only test accuracy | 66.52% |
-| MM early-fusion test accuracy | 70.20% |
-| CNN audio-to-fusion transitions | 209 rescued / 142 harmed |
-| MM audio-to-fusion transitions | 190 rescued / 124 harmed |
-| Visual-typicality assignments reconstructed | All 1,792 matched saved assignments |
-| CNN gain excluding four flagged test recordings | +3.64 percentage points |
+| Dataset size | 11,870 recordings |
+| Artist-disjoint partitions | Verified |
+| CNN audio-only accuracy | 65.90% |
+| CNN early-fusion accuracy | 69.64% |
+| MM audio-only accuracy | 66.52% |
+| MM early-fusion accuracy | 70.20% |
+| CNN prediction transitions | 209 rescued, 142 harmed |
+| MM prediction transitions | 190 rescued, 124 harmed |
+| Original CNN typicality assignments | 1,792 reconstructed |
+| CNN gain after artwork exclusion | +3.64 pp |
+| MM gain after artwork exclusion | +3.58 pp |
+| Alternative MM typicality | Main qualitative pattern persisted |
+| Five-seed CNN NN mean accuracy | 68.94% |
+| Five-seed MM NN mean accuracy | 69.44% |
 
-These results are checks **against the team's existing project artifacts**, not evidence of performance on an independent dataset. Consult [`REPRODUCIBILITY_VERIFICATION.md`](REPRODUCIBILITY_VERIFICATION.md) for the documented execution environments, bootstrap comparisons, numerical checks, and caveats.
+The complete numerical evidence and its qualifications are documented in:
 
-## 5. Important limitations and practical notes
+[REPRODUCIBILITY_VERIFICATION.md](REPRODUCIBILITY_VERIFICATION.md)
 
-1. **External inputs are essential.** Cloning the repository and installing the dependency names alone is insufficient to execute the full analyses.
-2. **Stages are not a single automated pipeline.** Stage 3 and Stage 5 intentionally use original saved model predictions; Stage 4 uses saved hash candidates and Stage 3 outputs.
-3. **Environment differences matter.** The Tesla T4 configuration reproduced the original neural-network class predictions, but other CPU execution conditions gave different outcomes. Exact reproducibility across hardware and package versions is not guaranteed.
-4. **Existing files should be backed up before rerunning.** The notebooks save into dedicated `reproducible_stage*_2026/` directories, but running a notebook again can overwrite files in its own output directory.
-5. **The audit is limited in scope.** It does not independently regenerate the original embeddings or perceptual hashes, certify all possible image overlaps, or independently validate the exploratory typicality findings.
+The three supplementary notebooks currently committed to GitHub contain executable procedures without saved cell outputs.
 
-## 6. Independent reproduction procedure
+Their recorded verification results are documented separately and should not be confused with directly inspectable execution outputs in the committed notebook files.
 
-For an additional clean-runtime verification:
+## 9. Important Reproducibility Limitations
 
-1. Obtain authorized access to the required **data and original research artifacts**.
-2. Open the notebooks in a new Colab session and configure `MSDI_PROJECT_DIR` if needed.
-3. Record Python, package, hardware, and CUDA versions before training.
-4. Run the stages in order, distinguishing original saved inputs from newly generated outputs.
-5. Compare the results with [`REPRODUCIBILITY_VERIFICATION.md`](REPRODUCIBILITY_VERIFICATION.md), preserving any discrepancies and full error logs.
-6. Record genuine new verification work in the repository without backdating or inventing historical runs.
+The following limitations apply:
 
-The existing documented verification is meaningful, but **full clean-environment, raw-data-to-paper reproduction has not been established**.
+1. **External data are required.** The GitHub repository does not include the full research dataset or intermediate artifacts.
+
+2. **The workflow is not fully automated.** Some stages intentionally use frozen predictions rather than automatically chaining newly trained models.
+
+3. **Neural-network execution conditions matter.** Successful prediction-level reproduction was obtained in a documented environment, but other executions produced different outcomes.
+
+4. **Perceptual-hash verification is incomplete.** Stage 4 checks the saved candidate list rather than regenerating every upstream hash.
+
+5. **The typicality analysis is retrospective.** Its groups depend on true genre labels and test-set rankings.
+
+6. **Statistical uncertainty is conditional.** The artist-cluster bootstrap does not provide independent validation of the exploratory association.
+
+7. **Independent data validation remains outstanding.** The experiments have not been independently repeated on a new dataset with a separate predefined analysis.
+
+These limitations should be considered when interpreting the reported results.
+
+## 10. Independent Verification Procedure
+
+For an additional clean-runtime check:
+
+1. Obtain authorized access to the original dataset and the necessary research artifacts.
+2. Open a new Google Colab session.
+3. Configure the project directory and required inputs.
+4. Record the Python, package, GPU, and CUDA versions.
+5. Execute the desired notebooks in the documented order.
+6. Compare outputs with the recorded verification results.
+7. Save new evidence separately, preserving previous experimental artifacts.
+8. Document any discrepancies, execution failures, or environment differences.
+
+Re-running notebooks may overwrite files in their designated output directories. Back up important results before execution.
+
+**Final note:** The repository documents meaningful numerical verification under the tested conditions, but independent raw-data-to-paper reproduction in a completely fresh environment has not been established.
