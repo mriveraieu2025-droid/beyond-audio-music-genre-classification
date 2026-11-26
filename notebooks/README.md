@@ -1,53 +1,103 @@
-# Experiment Notebooks
 
-This directory contains the **five organized experiment and verification notebooks** for *Beyond Audio: Music Genre Classification*, plus the original Google Colab development notebook.
+# Beyond Audio — Experiment Notebooks
 
-The final notebooks were prepared from the team's prior Colab research work. They have recorded runs using the team's **existing project data and saved artifacts**. They are not a fully self-contained raw-data-to-paper workflow.
+This directory contains the Python notebooks supporting the experiments in *Beyond Audio: Music Genre Classification*.
 
-## Final experiment notebooks
+The repository separates the final experiments from the original exploratory development work.
 
-| Notebook | What it does | Saved output folder in Google Drive |
-|---|---|---|
-| [Stage 1 — Logistic regression and fusion](beyond_audio_final_experiments_stage1.ipynb) | Aligns CNN/MM embeddings; trains and evaluates logistic-regression baselines, early fusion, and fixed/adaptive late fusion | `finetuning_experiments/reproducible_stage1_2026/` |
-| [Stage 2 — Neural networks](beyond_audio_final_experiments_stage2.ipynb) | Trains CNN and MM early-fusion neural networks with validation-based checkpoint selection and compares saved original predictions | `finetuning_experiments/reproducible_stage2_2026/` |
-| [Stage 3 — Visual typicality and uncertainty](beyond_audio_final_experiments_stage3.ipynb) | Reconstructs retrospective typicality quintiles, paired prediction transitions, and artist-cluster bootstrap intervals | `finetuning_experiments/reproducible_stage3_2026/` |
-| [Stage 4 — Artwork sensitivity](beyond_audio_final_experiments_stage4.ipynb) | Checks original experimental splits and saved perceptual-hash candidates; evaluates sensitivity to flagged test recordings | `finetuning_experiments/reproducible_stage4_2026/` |
-| [Stage 5 — Figures and tables](beyond_audio_final_experiments_stage5.ipynb) | Recalculates reported metrics and genre-specific F1 values, reconstructs figure data, and checks supplementary results | `finetuning_experiments/reproducible_stage5_2026/` |
+## 1. Core Experiments
 
-Output folders above are relative to the Google Drive project root `/content/drive/MyDrive/MSD-I_project` (or the `MSDI_PROJECT_DIR` override). Their contents are **not committed to GitHub**.
+The five core notebooks cover the main research workflow.
 
-## Original development notebook
+| Notebook | Purpose |
+|---|---|
+| [Stage 1 — Classification and Fusion](beyond_audio_final_experiments_stage1.ipynb) | Logistic regression, audio-only baselines, early fusion, fixed late fusion, and confidence-adaptive late fusion |
+| [Stage 2 — Neural Networks](beyond_audio_final_experiments_stage2.ipynb) | CNN and MM early-fusion neural-network training and evaluation |
+| [Stage 3 — Visual Typicality](beyond_audio_final_experiments_stage3.ipynb) | Genre-relative typicality quintiles, rescued/harmed predictions, and artist-cluster bootstrap |
+| [Stage 4 — Artwork Sensitivity](beyond_audio_final_experiments_stage4.ipynb) | Dataset-integrity checks and candidate near-duplicate artwork sensitivity |
+| [Stage 5 — Results Verification](beyond_audio_final_experiments_stage5.ipynb) | Verification of classification metrics, supplementary tables, and research figures |
 
-The [original development notebook](beyond_audio_colab_development.ipynb) records exploratory work that preceded the GitHub repository, including:
+These notebooks use the original artist-disjoint dataset partitions and precomputed CNN/MM representations.
 
-- MSD-I metadata inspection, feature alignment, and data integrity
-- Audio-only and visual-only logistic-regression baselines
-- CNN and MM early-fusion classification
-- Fixed and confidence-adaptive late fusion
-- Feedforward neural networks
-- Prediction-level analysis and visual-typicality groups
-- Bootstrap uncertainty, robustness checks, and report figures
+The recommended execution sequence is Stage 1 through Stage 5, respecting their documented dependencies.
 
-Some earlier experiments were superseded or corrected by later work. Saved cell outputs were removed from the **public development notebook** to reduce size; the original Colab work and its corresponding research artifacts were retained separately by the team.
+## 2. Supplementary Experiments
 
-**Use the staged notebooks for the final verified workflow**, rather than assuming the development notebook will execute independently from top to bottom.
+Three additional notebooks support analyses reported in the appendices.
 
-## Data, dependencies, and verification
+| Notebook | Purpose |
+|---|---|
+| [Weighted Neural-Network Verification](weighted_nn_verification_colab.ipynb) | Reconstructs class-weighted cross-entropy experiments using seed 42 |
+| [Alternative Visual Typicality](mm_visual_typicality_robustness_colab.ipynb) | Evaluates robustness when visual typicality is defined using MM instead of CNN embeddings |
+| [Multi-Seed NN Stability](beyond_audio_multiseed_nn_stability_colab.ipynb) | Evaluates unweighted CNN/MM neural networks across five predefined random seeds |
 
-The source feature archives, prepared embeddings, metadata, prediction CSVs, checkpoints, and original perceptual-hash records reside outside this public repository. They must be available in the authorized research workspace to execute the notebooks.
+These experiments provide additional evidence concerning class imbalance, representation sensitivity, and training randomness.
 
-The five stages are intentionally **data-dependent**. In particular, Stage 3 reads original frozen model predictions, Stage 4 reads previously generated candidate-artwork files, and Stage 5 reads original predictions plus verified Stage 3–4 outputs. The original feature-extractor networks are **not** trained by this project.
+They do not constitute independent validation on a new dataset.
 
-For setup, provenance, and recorded verification, refer to:
+The three supplementary notebooks currently committed to GitHub contain executable code without saved cell outputs. Their recorded numerical results are documented in the project's verification record.
 
-- [Reproduction and execution instructions](../REPRODUCE.md)
-- [Data and reproducibility guide](DATA_AND_REPRODUCIBILITY.md)
-- [Experiment index](EXPERIMENT_INDEX.md)
-- [Recorded reproduction checks](../REPRODUCIBILITY_VERIFICATION.md)
-- [Python dependencies](requirements.txt) (names only; not pinned versions)
+## 3. Original Development Notebook
 
-An independent clean-environment execution from all original data to the final figures has **not** been established.
+[Original Colab Development](beyond_audio_colab_development.ipynb)
 
-## Development history
+This notebook preserves the original exploratory research.
 
-Research and notebook development began in Google Colab before this repository was created. GitHub commits document the subsequent repository history and should not be interpreted as a complete chronology of the earlier Colab work. Generative AI assistance is disclosed in the [main README](../README.md).
+It includes preliminary experiments, intermediate analyses, and approaches that were later corrected or superseded.
+
+The public notebook does not contain its historical saved cell outputs.
+
+**For the final reported experiments, use the eight organized notebooks above rather than the exploratory development notebook.**
+
+The development notebook is retained to preserve research history.
+
+## 4. Data and Execution
+
+The experiments were developed using Google Colab and project data stored separately in Google Drive.
+
+The default project directory is:
+
+`/content/drive/MyDrive/MSD-I_project`
+
+An alternative location can be specified using the `MSDI_PROJECT_DIR` environment variable.
+
+The repository does not include the full research dataset, prepared feature matrices, original checkpoints, saved predictions, or selected intermediate artifacts.
+
+These must be obtained separately from authorized sources or the team's existing project workspace.
+
+Some core notebooks intentionally use original frozen predictions rather than automatically consuming newly trained models.
+
+The notebooks are therefore documented, data-dependent verification workflows rather than a fully self-contained raw-data-to-paper pipeline.
+
+### Experiment Output Directories
+
+The core notebooks write results to:
+
+- `reproducible_stage1_2026/`
+- `reproducible_stage2_2026/`
+- `reproducible_stage3_2026/`
+- `reproducible_stage4_2026/`
+- `reproducible_stage5_2026/`
+
+The supplementary notebooks write results to:
+
+- `reproducible_weighted_nn_2026/`
+- `mm_visual_typicality_robustness_2026/`
+- `multiseed_nn_stability_2026/`
+
+These directories are located within `finetuning_experiments/` in the external project workspace.
+
+Their contents are not committed to this repository.
+
+## 5. Documentation
+
+For more information:
+
+- [Main Project README](../README.md) — Project overview and main findings.
+- [REPRODUCE.md](../REPRODUCE.md) — Complete execution instructions and data requirements.
+- [EXPERIMENT_INDEX.md](EXPERIMENT_INDEX.md) — Maps each experiment to its corresponding report results.
+- [REPRODUCIBILITY_VERIFICATION.md](../REPRODUCIBILITY_VERIFICATION.md) — Numerical verification evidence and limitations.
+- [DATA_AND_REPRODUCIBILITY.md](DATA_AND_REPRODUCIBILITY.md) — Dataset provenance and intermediate research artifacts.
+- [requirements.txt](requirements.txt) — Python dependencies.
+
+The project has not established fully independent reproduction from the original raw data in a new computing environment.
