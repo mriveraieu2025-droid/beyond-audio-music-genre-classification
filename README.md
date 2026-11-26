@@ -1,7 +1,7 @@
 
 # Beyond Audio: Music Genre Classification
 
-**Machine Learning Final Project — November 2026**  
+**Machine Learning Final Project**  
 **IE University | Bachelor in Applied Mathematics**
 
 **Authors:** Carlos Saldaña, Ana Santos, María Rivera
