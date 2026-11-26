@@ -40,7 +40,7 @@ near_duplicate_candidates.csv
 
 **These dataset files and research artifacts are not distributed in this GitHub repository.** Authorized access to the original files or the team's prepared workspace is required. The user of the files is responsible for following the original dataset's distribution terms.
 
-The five staged notebooks train **downstream classifiers on precomputed embeddings**. They do not retrain the original audio or visual feature-extraction networks.
+The five core staged notebooks and three supplementary verification notebooks use **precomputed embeddings**. They do not retrain the original audio or visual feature-extraction networks.
 
 ## 3. Prepared representation files
 
@@ -112,7 +112,7 @@ All paths in this table are relative to `finetuning_experiments/` under the Goog
 
 The original exploratory [development notebook](../archive/beyond_audio_colab_development.ipynb) contains preliminary, corrected, and final experiment sequences. It should not be treated as a guaranteed clean, top-to-bottom production pipeline.
 
-## 5. Five-stage reconstruction and generated outputs
+## 5. Core reconstruction and supplementary experiment outputs
 
 The repository includes five organized experiment notebooks. Their outputs are written to dedicated directories under `finetuning_experiments/` rather than intentionally replacing the original research artifacts.
 
@@ -126,7 +126,17 @@ The repository includes five organized experiment notebooks. Their outputs are w
 
 **Data dependency boundary:** Stage 3 uses **original saved CNN/MM test predictions**, not automatically the newly generated Stage 1 predictions. Stage 4 uses the saved perceptual-hash candidates and Stage 3 outputs. Stage 5 uses original frozen model predictions plus verified Stage 3 and Stage 4 outputs. Thus, the stages document reproducibility and internal consistency but do not form an entirely self-contained raw-data-to-paper pipeline.
 
-Rerunning the notebooks can overwrite files in their own `reproducible_stage*_2026/` output directories. Back up verified outputs before re-execution if they need to be preserved.
+Three supplementary notebooks also save to separate external workspace directories:
+
+| Experiment | Output directory |
+|---|---|
+| Class-weighted neural networks | `reproducible_weighted_nn_2026/` |
+| Alternative MM-based visual typicality | `mm_visual_typicality_robustness_2026/` |
+| Five-seed unweighted neural-network stability | `multiseed_nn_stability_2026/` |
+
+These supplementary outputs, like the Stage 1–5 artifacts, are not committed to GitHub. See [REPRODUCE.md](../REPRODUCE.md) for the corresponding input dependencies.
+
+Rerunning the notebooks can overwrite files in their dedicated output directories. Back up verified outputs before re-execution if they need to be preserved.
 
 ## 6. Recorded data-integrity and result verification
 

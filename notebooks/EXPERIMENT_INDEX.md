@@ -156,11 +156,11 @@ For further information, consult:
 
 - [Main Project README](../README.md) — research overview, findings, and repository navigation.
 - [REPRODUCE.md](../REPRODUCE.md) — required files, execution order, environment information, and reproduction instructions.
-- [REPRODUCIBILITY_VERIFICATION.md](../REPRODUCIBILITY_VERIFICATION.md) — recorded verification evidence for the original five stages.
+- [REPRODUCIBILITY_VERIFICATION.md](../REPRODUCIBILITY_VERIFICATION.md) — recorded verification evidence for all five core stages and three supplementary experiments.
 - [DATA_AND_REPRODUCIBILITY.md](DATA_AND_REPRODUCIBILITY.md) — data provenance, prepared features, and intermediate artifacts.
 - [requirements.txt](requirements.txt) — Python dependencies, currently without pinned versions.
 
-The supplementary experiments extend the original five-stage verification record. Their numerical findings are documented in the latest scientific report and should also be incorporated into an updated reproducibility verification record.
+The supplementary experiment results are included in the updated [reproducibility verification record](../REPRODUCIBILITY_VERIFICATION.md). The public copies of the three supplementary notebooks contain source code without saved cell execution outputs.
 
 ## 7. Recommended Reading Order
 

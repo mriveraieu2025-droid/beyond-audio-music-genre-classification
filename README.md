@@ -324,7 +324,7 @@ A fully independent clean-environment execution from the original source archive
 
 In addition, the visual-typicality findings remain exploratory because their grouping definitions require true genre labels and test-set rankings.
 
-For detailed evidence concerning the five original stages, see [REPRODUCIBILITY_VERIFICATION.md](REPRODUCIBILITY_VERIFICATION.md). The supplementary notebooks document the additional experiment procedures.
+For recorded results and limitations across all eight core and supplementary experiments, see [REPRODUCIBILITY_VERIFICATION.md](REPRODUCIBILITY_VERIFICATION.md).
 
 ## 9. Development History and Attribution
 
@@ -342,7 +342,3 @@ Transactions of the International Society for Music Information Retrieval, 1(1),
 
 https://doi.org/10.5334/tismir.10
 
-
-## Reference
-
-Oramas, S., Barbieri, F., Nieto, O., & Serra, X. (2018). *Multimodal Deep Learning for Music Genre Classification*. *Transactions of the International Society for Music Information Retrieval*, 1(1), 4–21. https://doi.org/10.5334/tismir.10

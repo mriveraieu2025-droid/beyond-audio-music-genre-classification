@@ -398,7 +398,7 @@ Stage 4 verified the saved candidate-artwork records and showed that excluding t
 
 Stage 5 recalculates the reported performance metrics and verifies the data underlying the main tables, confusion matrices, visual-typicality figures, and qualitative examples.
 
-It uses original saved model predictions and verified downstream research artifacts.
+It uses original saved model predictions and verified downstream research artifacts. The Stage 5 notebook's `figure1`–`figure4` references and exported filenames are historical internal identifiers; the revised manuscript can number those figures differently. The checks below are identified by their subject rather than relying on figure-number equality.
 
 ### Classification Table Verification
 
@@ -422,7 +422,7 @@ The Stage 1 and Stage 5 source references were corrected to 67.51%.
 
 The previously saved Stage 5 output was not regenerated following that reference edit. Its cached output should therefore not be treated as evidence of a new post-correction execution.
 
-### Report Figure 2: Confusion Matrices
+### Confusion Matrices
 
 Four row-normalized confusion matrices were reconstructed:
 
@@ -435,13 +435,13 @@ All 24 genre-specific F1 scores matched the corresponding supplementary results 
 
 The figures were also checked for labeling and readability.
 
-### Report Figure 3: Fusion Gains by Visual Typicality
+### Fusion Gains by Visual Typicality
 
 The visual-typicality fusion-gain figure was reconstructed using the verified artist-cluster bootstrap estimates.
 
 The quintile-specific gains and reported 95% confidence intervals matched the original analysis.
 
-### Report Figure 5: Absolute Accuracy by Visual Typicality
+### Absolute Accuracy by Visual Typicality
 
 The supplementary accuracy curves were reconstructed from the original frozen model predictions.
 
@@ -459,7 +459,7 @@ The checks covered the report's supplementary tables, including:
 
 The recorded automated numerical consistency checks passed.
 
-### Report Figure 6: Qualitative Album-Cover Examples
+### Qualitative Album-Cover Examples
 
 Six selected album-cover examples were checked against the original research metadata.
 
